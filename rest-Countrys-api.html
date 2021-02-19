@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rest Countrys API</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+      crossorigin="anonymous"
+    />
+    <style>
+      .single-divs {
+        text-align: center;
+      }
+      .single-divs h2 {
+        color: #ff5200;
+      }
+      .single-divs h5 {
+        color: cadetblue;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <div class="d-flex justify-content-center mt-5">
+        <input
+          type="text"
+          placeholder="Search by any country name and see his details"
+          class="form-control w-50"
+          id="searchInput"
+        />
+        <button class="btn btn-success" onclick="clickBtn()">
+          Click This Btn
+        </button>
+      </div>
+
+      <div class="mt-5" id="ful-containear-div"></div>
+    </main>
+
+    <script>
+      function clickBtn() {
+        const searchInput = document.getElementById("searchInput").value;
+        const url = `https://restcountries.eu/rest/v2/name/${searchInput}`;
+
+        fetch(url)
+          .then((res) => res.json())
+          .then((data) => {
+            getCountry(data);
+          });
+      }
+
+      function getCountry(countrys) {
+        const fulContainearDiv = document.getElementById("ful-containear-div");
+        fulContainearDiv.innerText = "";
+        for (let i = 0; i < countrys.length; i++) {
+          const country = countrys[i];
+
+          const singleDiv = document.createElement("div");
+          singleDiv.className = "single-divs";
+          singleDiv.innerHTML = `
+            <img class='w-50 my-5' src='${country.flag}'/>
+            <h2>${country.name}</h2>
+            <h5>${"Capital : " + country.capital}</h5>
+          
+          `;
+          fulContainearDiv.appendChild(singleDiv);
+        }
+      }
+    </script>
+  </body>
+</html>
